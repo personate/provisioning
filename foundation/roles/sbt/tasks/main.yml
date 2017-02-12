@@ -16,3 +16,7 @@
     name: sbt
     state: latest
     allow_unauthenticated: yes
+
+# Prerun sbt
+- name: Prerun sbt
+  shell: "sbt"

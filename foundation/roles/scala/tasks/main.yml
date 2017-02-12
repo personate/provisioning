@@ -1,0 +1,25 @@
+---
+
+- name: Download scala
+  get_url:
+    url: "http://downloads.lightbend.com/scala/2.12.1/scala-2.12.1.tgz"
+    dest: /tmp
+    validate_certs: no
+
+- name: Unzip scala
+  unarchive:
+    src: "/tmp/scala-2.12.1.tgz"
+    dest: /opt
+    copy: no
+
+- name: Link scala
+  alternatives:
+    name: scala
+    link: /usr/bin/scala
+    path: /opt/scala-2.12.1/bin/scala
+
+- name: Link scalac
+  alternatives:
+    name: scalac
+    link: /usr/bin/scalac
+    path: /opt/scala-2.12.1/bin/scalac

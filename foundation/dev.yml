@@ -4,4 +4,5 @@
   roles:
     - { role: java8, become: yes }
     - { role: nodejs, become: yes }
+    - { role: scala, become: yes }
     - { role: sbt, become: yes }

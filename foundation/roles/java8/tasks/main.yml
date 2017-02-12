@@ -59,3 +59,9 @@
   file:
     path: "/tmp/jdk-8u121-linux-x64.tar.gz"
     state: absent
+
+- name: Set java home
+  lineinfile:
+    destfile: /etc/environment
+    line: "JAVA_HOME=/opt/jdk/jdk1.8.0_121/"
+    state: present

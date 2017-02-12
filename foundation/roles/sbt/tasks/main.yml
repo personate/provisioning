@@ -1,0 +1,18 @@
+---
+
+# Add Sbt repository
+- name: Add sbt repository to repositories list
+  apt_repository:
+    repo: deb https://dl.bintray.com/sbt/debian /
+    state: present
+
+# Apt update
+- name: Run apt-get update for sbt
+  apt: update_cache=yes
+
+# Install sbt via apt-get
+- name: Install sbt
+  apt:
+    name: sbt
+    state: latest
+    allow_unauthenticated: yes

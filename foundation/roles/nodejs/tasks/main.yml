@@ -1,0 +1,49 @@
+---
+
+# Check whether file is already downloaded
+- name: Check if node is already downloaded
+  stat:
+    path: "/tmp/node-v7.5.0-linux-x64.tar.xz"
+  register: node_result
+
+# Check wether node is already installed
+- name: Check if node installation dir exists
+  stat:
+    path: "/opt/node-v7.5.0-linux-x64"
+  register: node_installed
+
+# Downloads nodejs 7.5.0 from official site
+- name: Get node 7.5.0 dictribution
+  get_url:
+    url: https://nodejs.org/dist/v7.5.0/node-v7.5.0-linux-x64.tar.xz
+    dest: /tmp
+    validate_certs: no
+  when: node_result.stat.exists == False
+
+# Opens downloaded distribution
+- name: Unzip node
+  unarchive:
+    src: "/tmp/node-v7.5.0-linux-x64.tar.xz"
+    dest: "/opt"
+    copy: no
+  when: node_installed.stat.exists == false
+
+# Create node link
+- name: Link nodejs
+  alternatives:
+    name: node
+    link: /usr/bin/node
+    path: /opt/node-v7.5.0-linux-x64/bin/node
+
+# Create npm link
+- name: Link npm
+  alternatives:
+    name: npm
+    link: /usr/bin/npm
+    path: /opt/node-v7.5.0-linux-x64/bin/npm
+
+# Delate downloaded node file
+- name: Delate node installation file
+  file:
+    path: "/tmp/node-v7.5.0-linux-x64.tar.xz"
+    state: absent

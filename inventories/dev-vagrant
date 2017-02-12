@@ -1,0 +1,2 @@
+[dev-vagrant]
+dev-vagrant-default ansible_ssh_host=10.123.2.222

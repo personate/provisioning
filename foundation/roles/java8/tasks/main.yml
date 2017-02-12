@@ -1,0 +1,61 @@
+---
+
+# Check whether java 8 is already downloaded
+- name: Check if java is already downloaded
+  stat:
+    path: "/tmp/jdk-8u121-linux-x64.tar.gz"
+  register: java_result
+
+# Check whether java is already extracted on disc
+- name: Check if opt/java already exits
+  stat:
+    path: "/opt/jdk/jdk1.8.0_121/"
+  register: java_opt
+
+# Install required java software properties common
+- name: Install Software properties common
+  apt: name=software-properties-common state=latest
+
+- name: Create /opt/jdk directory
+  file:
+    path: /opt/jdk
+    state: directory
+    mode: 0755
+
+# Download java 8 from oracle official website
+- name: Download java
+  get_url:
+    url: http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c4826b92b3f075a80e441/jdk-8u121-linux-x64.tar.gz
+    headers: "Cookie: oraclelicense=accept-securebackup-cookie"
+    validate_certs: no
+    dest: /tmp
+    mode: 0440
+  when: java_result.stat.exists == False
+
+# Open downloaded java 8 archive and move it to /opt/jdk/
+- name: Open downloaded java
+  unarchive:
+    src: "/tmp/jdk-8u121-linux-x64.tar.gz"
+    dest: "/opt/jdk/"
+    copy: no
+  when: java_opt.stat.exists == False
+
+# Set java command
+- name: Set java default java
+  alternatives:
+    name: java
+    link: /usr/bin/java
+    path: /opt/jdk/jdk1.8.0_121/bin/java
+
+# Set javac command
+- name: Set default javac
+  alternatives:
+    name: javac
+    link: /usr/bin/javac
+    path: /opt/jdk/jdk1.8.0_121/bin/javac
+
+# Clean up downloaded java 8 tar.gz file
+- name: Delate downloaded java tar.gz
+  file:
+    path: "/tmp/jdk-8u121-linux-x64.tar.gz"
+    state: absent

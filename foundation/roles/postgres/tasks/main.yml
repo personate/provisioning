@@ -1,0 +1,11 @@
+---
+
+- name: Install postgres
+  apt:
+    name: postgresql
+    state: latest
+
+- name: Install postgres-contrib
+  apt:
+    name: postgresql-contrib
+    state: latest

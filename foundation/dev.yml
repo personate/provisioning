@@ -6,3 +6,4 @@
     - { role: nodejs, become: yes }
     - { role: scala, become: yes }
     - { role: sbt, become: yes }
+    - { role: postgres, become: yes }

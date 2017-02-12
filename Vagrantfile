@@ -5,6 +5,10 @@ Vagrant.configure(2) do |config|
     dev.vm.network :private_network, ip: "10.123.2.222"
     dev.vm.hostname = "dev-personite"
 
+    dev.vm.provider :virtualbox do |v|
+      v.memory = 2048
+    end
+
     dev.vm.provision :ansible do |ansible|
       ansible.inventory_path = "./inventories/dev-vagrant"
       ansible.playbook = "foundation/dev.yml"

@@ -1,6 +1,10 @@
 ---
 
 - hosts: dev-vagrant
+
+  vars_files:
+    - vars/postgres_vars.yml
+
   roles:
     - { role: java8, become: yes }
     - { role: nodejs, become: yes }

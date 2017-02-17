@@ -24,13 +24,17 @@
     state: latest
 
 - name: Create database
-  postgresql_db: name=personate
+  postgresql_db: name={{ db_name }}
+  become_user: postgres
 
 - name: Create user
-  postgresql_user: db=personate name=vagrant password=vagrantpassword priv=ALL
+  postgresql_user: db={{ db_name }}  name={{ db_username }} password={{ db_password }} priv=ALL
+  become_user: postgres
 
 - name: Remove unnecessary privileges
-  postgresql_user: name=vagrant role_attr_flags=NOSUPERUSER,NOCREATEDB
+  postgresql_user: name={{ db_username }} role_attr_flags=NOSUPERUSER,NOCREATEDB
+  become_user: postgres
 
 - name: Ensure no other user can access the database
-  postgresql_privs: db=personate role=PUBLIC type=database priv=ALL state=absent
+  postgresql_privs: db={{ db_name }}  role=PUBLIC type=database priv=ALL state=absent
+  become_user: postgres
